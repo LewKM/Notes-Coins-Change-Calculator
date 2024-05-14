@@ -91,19 +91,42 @@ loop do
 end
 
 puts ""
-puts "🛒 Items selected:"
-items_selected.uniq.each do |item|
-    count = items_selected.count(item)
-    if count > 1
-        puts " #{count} of #{item}"
+# Initialize a hash to store item counts
+item_counts = {}
+
+# Count the occurrences of each item
+items_selected.each do |item|
+    if item_counts.has_key?(item)
+        item_counts[item] += 1
     else
-        puts " #{item}"
+        item_counts[item] = 1
     end
 end
 
+# Sort the items alphabetically
+sorted_items = item_counts.keys.sort
+
+# Calculate the total price
+total_price = 0
+
+puts "🛒 Items selected:"
+puts "--------------------------------------------------------"
+puts "Item\t\tQuantity\t\tPrice"
+sorted_items.each do |item|
+    count = item_counts[item]
+    price = shopping_menu[item] * count
+    total_price += price
+
+    puts "#{item}\t\t#{count}\t\t\tKshs #{price}"
+end
+
+puts "--------------------------------------------------------"
+puts "Total\t\t\t\tKshs #{total_price}"
+
+
 
 puts ""
-puts "💰 Total amount due: Kshs #{total}"
+puts "💰 Total BILL: Kshs #{total}"
 puts ""
 
 puts "💵 Enter the cash given (Kshs):"
