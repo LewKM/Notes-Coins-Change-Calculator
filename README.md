@@ -50,10 +50,21 @@ Ensure that the shopping menu (`shopping_menu` hash) is correctly configured wit
 
 ### Credits
 
-This script was developed by [Your Name] and is provided under the [MIT License](https://opensource.org/licenses/MIT).
+This script was developed by Lewis Mwendwa Kathembe and is provided under the [MIT License](https://opensource.org/licenses/MIT).
 
 ### Feedback
 
 If you have any feedback, suggestions, or bug reports, please feel free to [open an issue](https://github.com/your-repo/issues). Your contributions are welcome!
 
 Enjoy shopping with the Kenyan Shopping Cart and Currency Change Calculator!
+
+
+
+Discounts and Promotions: Not implemented in the provided code. This could be added with specific discount rules based on certain conditions, such as a discount for purchasing multiple items or a discount code entry.
+
+Receipt Printing: Not implemented in the provided code. This could be added at the end of the program to generate a formatted receipt with details of the items purchased, quantities, prices, subtotal, total, and any applicable taxes or discounts.
+
+Error Handling: Implemented for invalid quantity inputs in the quantity adjustment feature. Further error handling could be added for other potential errors, such as invalid menu selections or unexpected input.
+
+Currency Options: Not implemented in the provided code. This could be added as a configuration option at the beginning of the program to allow users to select their preferred currency for displaying prices.
+}}}

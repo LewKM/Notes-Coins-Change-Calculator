@@ -74,6 +74,10 @@ puts ""
 total = 0
 items_selected = []
 
+# Discount rules
+MULTI_ITEM_DISCOUNT_THRESHOLD = 3
+MULTI_ITEM_DISCOUNT_RATE = 10
+
 # Shopping loop
 loop do
     print_menu(sorted_menu)
@@ -148,9 +152,13 @@ loop do
     end
 end
 
-
-
 puts ""
+
+# Apply discount rules
+if items_selected.length >= MULTI_ITEM_DISCOUNT_THRESHOLD
+   discount_amount = (total * (MULTI_ITEM_DISCOUNT_THRESHOLD.to_f / 100)).round(2)
+   total -= discount_amount 
+end
 # Print the final items in the cart with their quantities
 puts "Items in the cart:"
 items_selected.each_with_index do |item, index|
@@ -158,7 +166,6 @@ items_selected.each_with_index do |item, index|
 end
 
 puts "Total: Kshs #{total}"
-
 
 puts ""
 # Initialize a hash to store item counts
@@ -183,7 +190,7 @@ total_price = 0
 
 puts "🛒 Items selected:"
 puts "--------------------------------------------------------"
-puts "Item\t\tQuantity\t\tPrice"
+puts "Item\t\t\tQuantity\t\tPrice"
 sorted_items.each do |item_name|
     count = item_counts[item_name]
     if shopping_menu[item_name].nil?
@@ -192,15 +199,14 @@ sorted_items.each do |item_name|
     end
     price = shopping_menu[item_name] * count
     total_price += price
-
-    puts "#{item_name}\t\t#{count}\t\t\tKshs #{price}"
+    spacing = "\t" * (2 - item_name.length / 4)
+    puts "#{item_name}#{spacing}\t\t#{count}\t\t\tKshs #{price}"
 end
 
 
 puts "--------------------------------------------------------"
 puts "Total\t\t\t\tKshs #{total_price}"
-
-
+puts "🎉🎉🎉 You have earned a discount of Kshs #{discount_amount}! 🎉🎉🎉"
 
 puts ""
 puts "💰 Total BILL: Kshs #{total}"
@@ -216,7 +222,7 @@ change = change_calculator(total, cash_given)
 if change
     note_change, coin_change = change
     puts "💸💸💸 Change Breakdown 💸💸💸"
-    puts "💰💰💰 CHANGE DUE: Kshs #{cash_given - total}.00 💰💰💰"
+    puts "💰💰💰 CHANGE DUE: Kshs #{(cash_given - total).round(2)} 💰💰💰"
     puts ""
     puts "💵 Notes:"
     note_change.each do |note, count|
