@@ -77,7 +77,7 @@ items_selected = []
 # Shopping loop
 loop do
     print_menu(sorted_menu)
-    puts "Select an item by pressing the corresponding number, or press 'q' to calculate total and exit:"
+    puts "Select an item by pressing the corresponding number, 'r' to remove an item, or 'q' to calculate total and exit:"
     choice = gets.chomp.downcase
 
     break if choice == 'q'
@@ -87,25 +87,91 @@ loop do
         selected_item = sorted_menu.keys[item_index]
         item_price = sorted_menu.values[item_index]
 
-        total += item_price
-        items_selected << selected_item
+        # Prompt the user for quantity
+        puts "Enter the quantity for #{selected_item}:"
+        quantity = gets.chomp.to_i
+        if quantity < 1
+            puts "Invalid quantity. Please enter a positive integer."
+            next
+        end
 
-        puts "#{selected_item} added to cart. Current total: Kshs #{total}"
+        total += item_price * quantity
+
+        # Check if the item already exists in the cart
+        existing_item_index = items_selected.index { |item| item[:item] == selected_item }
+        if existing_item_index
+            # If the item already exists, update its quantity
+            items_selected[existing_item_index][:quantity] += quantity
+        else
+            # If the item doesn't exist, add it to the cart
+            items_selected << { item: selected_item, quantity: quantity }
+        end
+
+        puts "#{quantity} #{selected_item}(s) added to cart. Current total: Kshs #{total}"
+    elsif choice == 'r'
+        if items_selected.empty?
+            puts "There are no items in the cart to remove."
+            next
+        end
+
+        # Print the current items in the cart with their indices
+        puts "Items in the cart:"
+        items_selected.each_with_index do |item, index|
+            puts "#{index + 1}. #{item[:item]} (#{item[:quantity]})"
+        end
+
+        puts "Enter the number of the item to remove:"
+        remove_choice = gets.chomp.to_i
+
+        if remove_choice.between?(1, items_selected.length)
+            removed_item = items_selected[remove_choice - 1]
+
+            # Prompt the user for the quantity to deduct
+            puts "Enter the quantity to remove for #{removed_item[:item]}:"
+            remove_quantity = gets.chomp.to_i
+
+            if remove_quantity < 1 || remove_quantity > removed_item[:quantity]
+                puts "Invalid quantity to remove. Please enter a positive integer not exceeding the current quantity."
+                next
+            end
+
+            # Deduct the specified quantity from the selected item
+            removed_item[:quantity] -= remove_quantity
+            total -= sorted_menu[removed_item[:item]] * remove_quantity
+
+            puts "#{remove_quantity} #{removed_item[:item]} removed from cart. Current total: Kshs #{total}"
+        else
+            puts "Invalid choice. Please enter a valid item number to remove."
+        end
     else
         puts "Invalid choice. Please select a valid item or press 'q' to calculate total and exit."
     end
 end
 
+
+
 puts ""
+# Print the final items in the cart with their quantities
+puts "Items in the cart:"
+items_selected.each_with_index do |item, index|
+    puts "#{index + 1}. #{item[:item]} (#{item[:quantity]})"
+end
+
+puts "Total: Kshs #{total}"
+
+
+puts ""
+# Initialize a hash to store item counts
 # Initialize a hash to store item counts
 item_counts = {}
 
 # Count the occurrences of each item
 items_selected.each do |item|
-    if item_counts.has_key?(item)
-        item_counts[item] += 1
+    item_name = item[:item]  # Extract the item name from the hash
+    if item_counts.has_key?(item_name)
+        item_counts[item_name] += item[:quantity]
     else
-        item_counts[item] = 1
+        item_counts[item_name] = item[:quantity]
     end
 end
 
@@ -118,13 +184,18 @@ total_price = 0
 puts "🛒 Items selected:"
 puts "--------------------------------------------------------"
 puts "Item\t\tQuantity\t\tPrice"
-sorted_items.each do |item|
-    count = item_counts[item]
-    price = shopping_menu[item] * count
+sorted_items.each do |item_name|
+    count = item_counts[item_name]
+    if shopping_menu[item_name].nil?
+        puts "Error: Price not found for #{item_name}. Please check your shopping menu."
+        next
+    end
+    price = shopping_menu[item_name] * count
     total_price += price
 
-    puts "#{item}\t\t#{count}\t\t\tKshs #{price}"
+    puts "#{item_name}\t\t#{count}\t\t\tKshs #{price}"
 end
+
 
 puts "--------------------------------------------------------"
 puts "Total\t\t\t\tKshs #{total_price}"
