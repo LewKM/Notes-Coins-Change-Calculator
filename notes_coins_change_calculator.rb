@@ -33,11 +33,11 @@ def change_calculator(bill, cash_given)
 end
 
 def print_menu(menu)
-    puts "---- Shopping Menu ----"
+    puts  "-----------------------"
+    puts "Code\tItem\t\t\t\tPrice"
     menu.each_with_index do |(item, price), index|
-        puts "#{index + 1}. #{item} - Kshs #{price}"
+        puts "#{index + 1}\t#{item}\t\t\t\tKshs #{price}"
     end
-    puts "q. Calculate total and exit"
     puts "-----------------------"
 end
 
@@ -61,6 +61,10 @@ shopping_menu = {
     "Apples" => 60
 }
 
+sorted_menu = shopping_menu.sort.to_h
+
+# print_menu(sorted_menu)
+
 puts "🎉🎉 Welcome to the Kenyan Shopping Cart and Currency Change Calculator 🎉🎉"
 puts ""
 
@@ -70,16 +74,16 @@ items_selected = []
 
 # Shopping loop
 loop do
-    print_menu(shopping_menu)
+    print_menu(sorted_menu)
     puts "Select an item by pressing the corresponding number, or press 'q' to calculate total and exit:"
     choice = gets.chomp.downcase
 
     break if choice == 'q'
 
-    if choice.to_i.between?(1, shopping_menu.length)
+    if choice.to_i.between?(1, sorted_menu.length)
         item_index = choice.to_i - 1
-        selected_item = shopping_menu.keys[item_index]
-        item_price = shopping_menu.values[item_index]
+        selected_item = sorted_menu.keys[item_index]
+        item_price = sorted_menu.values[item_index]
 
         total += item_price
         items_selected << selected_item
