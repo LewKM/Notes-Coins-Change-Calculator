@@ -41,7 +41,7 @@ Ensure that the shopping menu (`shopping_menu` hash) is correctly configured wit
 
 ```ruby
 # Sample run code
-# (Replace this with the actual code to execute the script)
+# ruby notes_coins_change_calculator.rb
 ```
 
 ### Requirements
@@ -59,8 +59,6 @@ If you have any feedback, suggestions, or bug reports, please feel free to [open
 Enjoy shopping with the Kenyan Shopping Cart and Currency Change Calculator!
 
 
-
-Discounts and Promotions: Not implemented in the provided code. This could be added with specific discount rules based on certain conditions, such as a discount for purchasing multiple items or a discount code entry.
 
 Receipt Printing: Not implemented in the provided code. This could be added at the end of the program to generate a formatted receipt with details of the items purchased, quantities, prices, subtotal, total, and any applicable taxes or discounts.
 
