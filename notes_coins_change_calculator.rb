@@ -226,11 +226,11 @@ if change
     puts ""
     puts "💵 Notes:"
     note_change.each do |note, count|
-        puts " #{count} of Kshs #{note} notes"
+        puts " #{(count).round(0)} of Kshs #{note} notes"
     end
 
     puts "💰 Coins:"
     coin_change.each do |coin, count|
-        puts " #{count} of Kshs #{coin} coins"
+        puts " #{(count).round(0)} of Kshs #{coin} coins"
     end
 end
