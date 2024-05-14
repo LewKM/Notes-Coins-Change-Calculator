@@ -33,12 +33,14 @@ def change_calculator(bill, cash_given)
 end
 
 def print_menu(menu)
-    puts  "-----------------------"
+    puts  "------------------------------------------------------"
     puts "Code\tItem\t\t\t\tPrice"
+    puts "-------------------------------------------------------"
     menu.each_with_index do |(item, price), index|
-        puts "#{index + 1}\t#{item}\t\t\t\tKshs #{price}"
+        spacing = "\t" * (2 - item.length / 4)
+        puts "#{index + 1}\t#{item}#{spacing}\t\t\tKshs #{price}"
     end
-    puts "-----------------------"
+    puts "-------------------------------------------------------"
 end
 
 # Define shopping items and prices
