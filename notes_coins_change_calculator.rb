@@ -32,21 +32,73 @@ def change_calculator(bill, cash_given)
     return [note_change_breakdown, coin_change_breakdown]
 end
 
-puts "🎉🎉 Welcome to the Kenyan Currency Change Calculator 🎉🎉"
+def print_menu(menu)
+    puts "---- Shopping Menu ----"
+    menu.each_with_index do |(item, price), index|
+        puts "#{index + 1}. #{item} - Kshs #{price}"
+    end
+    puts "q. Calculate total and exit"
+    puts "-----------------------"
+end
 
-puts "💵 Enter the BILL (Kshs):"
-bill = gets.chomp.to_i
+# Define shopping items and prices
+shopping_menu = {
+    "Milk" => 50,
+    "Bread" => 30,
+    "Eggs" => 20,
+    "Butter" => 80
+}
 
-puts "💰 Enter the CASH GIVEN (Kshs):"
-cash_given = gets.chomp.to_i
+puts "🎉🎉 Welcome to the Kenyan Shopping Cart and Currency Change Calculator 🎉🎉"
 puts ""
 
-change = change_calculator(bill, cash_given)
+# Initialize variables
+total = 0
+items_selected = []
+
+# Shopping loop
+loop do
+    print_menu(shopping_menu)
+    puts "Select an item by pressing the corresponding number, or press 'q' to calculate total and exit:"
+    choice = gets.chomp.downcase
+
+    break if choice == 'q'
+
+    if choice.to_i.between?(1, shopping_menu.length)
+        item_index = choice.to_i - 1
+        selected_item = shopping_menu.keys[item_index]
+        item_price = shopping_menu.values[item_index]
+
+        total += item_price
+        items_selected << selected_item
+
+        puts "#{selected_item} added to cart. Current total: Kshs #{total}"
+    else
+        puts "Invalid choice. Please select a valid item or press 'q' to calculate total and exit."
+    end
+end
+
+puts ""
+puts "🛒 Items selected:"
+items_selected.each do |item|
+    puts "- #{item}"
+end
+
+puts ""
+puts "💰 Total amount due: Kshs #{total}"
+puts ""
+
+puts "💵 Enter the cash given (Kshs):"
+cash_given = gets.chomp.to_i
+
+puts ""
+
+change = change_calculator(total, cash_given)
 
 if change
     note_change, coin_change = change
     puts "💸💸💸 Change Breakdown 💸💸💸"
-    puts "💰💰💰 CHANGE DUE: Kshs #{cash_given - bill}.00 💰💰💰"
+    puts "💰💰💰 CHANGE DUE: Kshs #{cash_given - total}.00 💰💰💰"
     puts ""
     puts "💵 Notes:"
     note_change.each do |note, count|
