@@ -46,7 +46,19 @@ shopping_menu = {
     "Milk" => 50,
     "Bread" => 30,
     "Eggs" => 20,
-    "Butter" => 80
+    "Butter" => 80,
+    "Sugar" => 40,
+    "Coffee" => 120,
+    "Tea Leaves" => 60,
+    "Rice" => 100,
+    "Flour" => 45,
+    "Salt" => 25,
+    "Cooking Oil" => 90,
+    "Tomatoes" => 15,
+    "Potatoes" => 35,
+    "Onions" => 30,
+    "Bananas" => 10,
+    "Apples" => 60
 }
 
 puts "🎉🎉 Welcome to the Kenyan Shopping Cart and Currency Change Calculator 🎉🎉"
