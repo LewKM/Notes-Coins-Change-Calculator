@@ -92,9 +92,15 @@ end
 
 puts ""
 puts "🛒 Items selected:"
-items_selected.each do |item|
-    puts "- #{item}"
+items_selected.uniq.each do |item|
+    count = items_selected.count(item)
+    if count > 1
+        puts " #{count} of #{item}"
+    else
+        puts " #{item}"
+    end
 end
+
 
 puts ""
 puts "💰 Total amount due: Kshs #{total}"
