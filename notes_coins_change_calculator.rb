@@ -1,3 +1,6 @@
+require "rqrcode"
+require "chunky_png"
+require "prawn"
 def change_calculator(bill, cash_given)
     if cash_given < bill
         puts "⚠️ Amount paid cannot be less than the amount due"
@@ -160,53 +163,95 @@ if items_selected.length >= MULTI_ITEM_DISCOUNT_THRESHOLD
    total -= discount_amount 
 end
 # Print the final items in the cart with their quantities
-puts "Items in the cart:"
-items_selected.each_with_index do |item, index|
-    puts "#{index + 1}. #{item[:item]} (#{item[:quantity]})"
-end
+# puts "Items in the cart:"
+# items_selected.each_with_index do |item, index|
+#     puts "#{index + 1}. #{item[:item]} (#{item[:quantity]})"
+# end
 
-puts "Total: Kshs #{total}"
+# puts "Total: Kshs #{total}"
 
-puts ""
-# Initialize a hash to store item counts
-# Initialize a hash to store item counts
-item_counts = {}
+# puts ""
+# # Initialize a hash to store item counts
+# # Initialize a hash to store item counts
+# item_counts = {}
 
-# Count the occurrences of each item
-items_selected.each do |item|
-    item_name = item[:item]  # Extract the item name from the hash
-    if item_counts.has_key?(item_name)
-        item_counts[item_name] += item[:quantity]
-    else
-        item_counts[item_name] = item[:quantity]
+# # Count the occurrences of each item
+# items_selected.each do |item|
+#     item_name = item[:item]  # Extract the item name from the hash
+#     if item_counts.has_key?(item_name)
+#         item_counts[item_name] += item[:quantity]
+#     else
+#         item_counts[item_name] = item[:quantity]
+#     end
+# end
+
+# # Sort the items alphabetically
+# sorted_items = item_counts.keys.sort
+
+# # Calculate the total price
+# total_price = 0
+
+# puts "🛒 Items selected:"
+# puts "--------------------------------------------------------"
+# puts "Item\t\t\tQuantity\t\tPrice"
+# sorted_items.each do |item_name|
+#     count = item_counts[item_name]
+#     if shopping_menu[item_name].nil?
+#         puts "Error: Price not found for #{item_name}. Please check your shopping menu."
+#         next
+#     end
+#     price = shopping_menu[item_name] * count
+#     total_price += price
+#     spacing = "\t" * (2 - item_name.length / 4)
+#     puts "#{item_name}#{spacing}\t\t#{count}\t\t\tKshs #{price}"
+# end
+
+
+# puts "--------------------------------------------------------"
+# puts "Total\t\t\t\tKshs #{total_price}"
+# puts "🎉🎉🎉 You have earned a discount of Kshs #{discount_amount}! 🎉🎉🎉"
+
+# Save PDF receipt generator
+
+receipt_code = rand(36**5).to_s(10).rjust(5, "0")
+receipt_filename = "receipt-#{receipt_code}.pdf"
+
+qrcode = RQRCode::QRCode.new(receipt_code)
+
+# Convert the QR code to PNG format
+qr_png = qrcode.as_png(
+  resize_gte_to: false,
+  resize_exactly_to: false,
+  fill: "white",
+  color: "black",
+  size: 120,
+  border_modules: 4,
+  module_px_size: 6,
+  file: nil # Don't save the file, return as a string
+)
+
+Prawn::Document.generate(receipt_filename) do
+    text "Ruby Shopping Cart", align: :center, size: 30, style: :bold
+    text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
+    move_down 20
+    text "Items Purchased", style: :bold
+    items_selected.each do |item|
+        text "#{item[:quantity]} x #{item[:item]} - Kshs #{shopping_menu[item[:item]] * item[:quantity] }"
     end
+    
+    move_down 10
+    text "Total: Kshs #{total}", style: :bold
+    move_down 20
+    text "You have earned a discount of Kshs #{discount_amount}!", style: :bold
+    move_down 20
+    text "Thank you for shopping with us!", style: :italic, align: :center
+    move_down 20
+    text "Scan the QR code below for more details:", align: :center
+
+    # Embed the QR code PNG into the PDF
+    image StringIO.new(qr_png.to_s), width: 150, height: 150, at: [100, cursor - 150]
 end
 
-# Sort the items alphabetically
-sorted_items = item_counts.keys.sort
-
-# Calculate the total price
-total_price = 0
-
-puts "🛒 Items selected:"
-puts "--------------------------------------------------------"
-puts "Item\t\t\tQuantity\t\tPrice"
-sorted_items.each do |item_name|
-    count = item_counts[item_name]
-    if shopping_menu[item_name].nil?
-        puts "Error: Price not found for #{item_name}. Please check your shopping menu."
-        next
-    end
-    price = shopping_menu[item_name] * count
-    total_price += price
-    spacing = "\t" * (2 - item_name.length / 4)
-    puts "#{item_name}#{spacing}\t\t#{count}\t\t\tKshs #{price}"
-end
-
-
-puts "--------------------------------------------------------"
-puts "Total\t\t\t\tKshs #{total_price}"
-puts "🎉🎉🎉 You have earned a discount of Kshs #{discount_amount}! 🎉🎉🎉"
 
 puts ""
 puts "💰 Total BILL: Kshs #{total}"
