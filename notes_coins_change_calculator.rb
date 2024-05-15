@@ -76,6 +76,7 @@ puts ""
 
 # Initialize variables
 total = 0
+total_before_discount = 0  # Initialize total before discount
 items_selected = []
 
 # Discount rules
@@ -103,6 +104,10 @@ loop do
             next
         end
 
+        # Update total before discount
+        total_before_discount += item_price * quantity
+
+        # Update total
         total += item_price * quantity
 
         # Check if the item already exists in the cart
@@ -146,6 +151,7 @@ loop do
             # Deduct the specified quantity from the selected item
             removed_item[:quantity] -= remove_quantity
             total -= sorted_menu[removed_item[:item]] * remove_quantity
+            total_before_discount -= sorted_menu[removed_item[:item]] * remove_quantity  # Deduct from total before discount
 
             puts "#{remove_quantity} #{removed_item[:item]} removed from cart. Current total: Kshs #{total}"
         else
@@ -155,6 +161,7 @@ loop do
         puts "Invalid choice. Please select a valid item or press 'q' to calculate total and exit."
     end
 end
+
 
 puts ""
 
@@ -287,48 +294,68 @@ Prawn::Document.generate(receipt_filename) do
     
     
     move_down 20
-    # Calculate the width of "You have earned a discount of Kshs " and "#{discount_amount}"
-    discount_text_width = width_of("You have earned a discount of Kshs ")
-    discount_amount_width = width_of("Kshs #{discount_amount}")
+    # Calculate the width of "Total Before Discount" and "#{total_before_discount}"
+    total_before_discount_text_width = width_of("Total Before Discount:")
+    total_before_discount_amount_width = width_of("Kshs #{total_before_discount}")
 
-    # Calculate the positions for "You have earned a discount of Kshs " and "#{discount_amount}"
-    discount_text_x_position = bounds.left
-    discount_amount_x_position = bounds.right - 100
+    # Calculate the positions for "Total Before Discount" and "#{total_before_discount}"
+    total_before_discount_text_x_position = bounds.left
+    total_before_discount_amount_x_position = bounds.right - 100
 
-    # Calculate the height of the line containing "You have earned a discount of Kshs " and "#{discount_amount}"
-    line_height = 20  # Set a fixed line height
+    # Calculate the height of the line containing "Total Before Discount" and "#{total_before_discount}"
+    line_height = 10  # Set a fixed line height
 
-    # Place "You have earned a discount of Kshs " on the left and "#{discount_amount}" on the right
-    discount_text_y_position = cursor
-    discount_amount_y_position = cursor
+    # Place "Total Before Discount" on the left and "#{total_before_discount}" on the right
+    total_before_discount_text_y_position = cursor
+    total_before_discount_amount_y_position = cursor 
 
-    text_box "You have earned a discount of Kshs ", at: [discount_text_x_position, discount_text_y_position], style: :bold
-    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :bold
+    text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold
+    text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic
 
     move_down line_height + 10
 
-    # Calculate the width of "Total BILL:" and "Kshs #{total}"
-    total_bill_width = width_of("Total BILL:")
+    # Calculate the width of "Discount Earned" and "#{discount_amount}"
+    discount_text_width = width_of("Discount Earned:")
+    discount_amount_width = width_of("Kshs #{discount_amount}")
+
+    # Calculate the positions for "Discount Earned" and "#{discount_amount}"
+    discount_text_x_position = bounds.left
+    discount_amount_x_position = bounds.right - 100
+
+    # Calculate the height of the line containing "Discount Earned" and "#{discount_amount}"
+    line_height = 10  # Set a fixed line height
+
+    # Place "Discount Earned" on the left and "#{discount_amount}" on the right
+    discount_text_y_position = cursor
+    discount_amount_y_position = cursor
+
+    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold
+    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic
+
+    move_down line_height + 10
+
+    # Calculate the width of "Total After Discount:" and "Kshs #{total}"
+    total_bill_width = width_of("Total After Discount:")
     total_amount_width = width_of("Kshs #{total}")
 
-    # Calculate the positions for "Total BILL:" and "Kshs #{total}"
+    # Calculate the positions for "Total After Discount:" and "Kshs #{total}"
     total_bill_x_position = bounds.left
     total_amount_x_position = bounds.right - 100
 
-    # Calculate the height of the line containing "Total BILL:" and "Kshs #{total}"
-    line_height = 20  # Set a fixed line height
+    # Calculate the height of the line containing "Total After Discount:" and "Kshs #{total}"
+    line_height = 10  # Set a fixed line height
 
-    # Place "Total BILL:" on the left and "Kshs #{total}" on the right
+    # Place "Total After Discount:" on the left and "Kshs #{total}" on the right
     total_bill_y_position = cursor
     total_amount_y_position = cursor 
 
-    text_box "Total BILL:", at: [total_bill_x_position, total_bill_y_position], style: :bold
-    text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :bold
+    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold
+    text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic
 
     move_down line_height + 10 
-    # move_down 10
+
     # Calculate the width of "Cash Given: Kshs " and "#{cash_given}"
-    cash_given_text_width = width_of("Cash Given: Kshs ")
+    cash_given_text_width = width_of("Cash Given:")
     cash_given_amount_width = width_of("Kshs #{cash_given}")
 
     # Calculate the positions for "Cash Given: Kshs " and "#{cash_given}"
@@ -336,16 +363,36 @@ Prawn::Document.generate(receipt_filename) do
     cash_given_amount_x_position = bounds.right - 100
 
     # Calculate the height of the line containing "Cash Given: Kshs " and "#{cash_given}"
-    line_height = 20  # Set a fixed line height
+    line_height = 10  # Set a fixed line height
 
     # Place "Cash Given: Kshs " on the left and "#{cash_given}" on the right
     cash_given_text_y_position = cursor
     cash_given_amount_y_position = cursor 
 
-    text_box "Cash Given: Kshs ", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold
-    text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :bold
+    text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold
+    text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :italic
 
     move_down line_height + 10
+
+    # Calculate the change
+    change = cash_given - total
+
+    # Calculate the width of "Change:" and "#{change}"
+    change_text_width = width_of("Change:")
+    change_amount_width = width_of("Kshs #{change.round(2)}")
+
+    # Calculate the positions for "Change:" and "#{change}"
+    change_text_x_position = bounds.left
+    change_amount_x_position = bounds.right - 100
+
+    # Place "Change:" on the left and "#{change}" on the right
+    change_text_y_position = cursor
+    change_amount_y_position = cursor 
+
+    text_box "Change:", at: [change_text_x_position, change_text_y_position], style: :bold
+    text_box "Kshs #{change.round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic
+
+
     move_down 20
     text "Notes:", style: :bold, align: :center
     note_table_data = [["Note", "Quantity"]]
