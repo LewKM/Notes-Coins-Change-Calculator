@@ -352,8 +352,13 @@ Prawn::Document.generate(receipt_filename) do
     text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold
     text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic
 
-    move_down line_height + 10 
-
+    move_down line_height + 5
+    # Draw a horizontal line
+    stroke do
+        stroke_color "000000"
+        stroke_horizontal_line bounds.left, bounds.right, at: cursor
+    end
+    move_down line_height + 5
     # Calculate the width of "Cash Given: Kshs " and "#{cash_given}"
     cash_given_text_width = width_of("Cash Given:")
     cash_given_amount_width = width_of("Kshs #{cash_given}")
