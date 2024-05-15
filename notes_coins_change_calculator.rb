@@ -327,8 +327,25 @@ Prawn::Document.generate(receipt_filename) do
 
     move_down line_height + 10 
     # move_down 10
-    text "Cash Given: Kshs #{cash_given}", style: :bold
-    move_down 10
+    # Calculate the width of "Cash Given: Kshs " and "#{cash_given}"
+    cash_given_text_width = width_of("Cash Given: Kshs ")
+    cash_given_amount_width = width_of("Kshs #{cash_given}")
+
+    # Calculate the positions for "Cash Given: Kshs " and "#{cash_given}"
+    cash_given_text_x_position = bounds.left
+    cash_given_amount_x_position = bounds.right - 100
+
+    # Calculate the height of the line containing "Cash Given: Kshs " and "#{cash_given}"
+    line_height = 20  # Set a fixed line height
+
+    # Place "Cash Given: Kshs " on the left and "#{cash_given}" on the right
+    cash_given_text_y_position = cursor
+    cash_given_amount_y_position = cursor 
+
+    text_box "Cash Given: Kshs ", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold
+    text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :bold
+
+    move_down line_height + 10
     move_down 20
     text "Notes:", style: :bold, align: :center
     note_table_data = [["Note", "Quantity"]]
