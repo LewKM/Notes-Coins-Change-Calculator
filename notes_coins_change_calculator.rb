@@ -277,6 +277,7 @@ Prawn::Document.generate(receipt_filename) do
     table(item_table_data, header: true, width: bounds.width) do
         cells.padding = 2
         cells.borders = []
+        cells.font_style = :italic
         row(0).font_style = :bold
         row(0).borders = [:bottom]
         row(0).border_width = 1
@@ -301,6 +302,7 @@ Prawn::Document.generate(receipt_filename) do
     table(note_table_data, header: true, width: bounds.width) do
         cells.padding = 2
         cells.borders = []
+        cells.font_style = :italic
         row(0).font_style = :bold
         row(0).borders = [:bottom]
         row(0).border_width = 1
