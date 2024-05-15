@@ -275,11 +275,15 @@ Prawn::Document.generate(receipt_filename) do
 
     # Render the table
     table(item_table_data, header: true, width: bounds.width) do
-    cells.padding = 4
-    cells.borders = [:bottom]
-    row(0).font_style = :bold
-    column(1).align = :center
+        cells.padding = 2
+        cells.borders = []
+        row(0).font_style = :bold
+        row(0).borders = [:bottom]
+        row(0).border_width = 1
+        row(0).border_color = "000000"
+        column(1).align = :center
     end
+    
     
     move_down 20
     text "You have earned a discount of Kshs #{discount_amount}!", style: :bold
@@ -289,30 +293,39 @@ Prawn::Document.generate(receipt_filename) do
     text "Cash Given: Kshs #{cash_given}", style: :bold
     move_down 10
     move_down 20
-    text "Notes:", style: :bold
+    text "Notes:", style: :bold, align: :center
     note_table_data = [["Note", "Quantity"]]
     note_change.each do |note, count|
         note_table_data << ["Kshs #{note}", (count).round(0)]
     end
     table(note_table_data, header: true, width: bounds.width) do
-        cells.padding = 4
-        cells.borders = [:bottom]
+        cells.padding = 2
+        cells.borders = []
         row(0).font_style = :bold
+        row(0).borders = [:bottom]
+        row(0).border_width = 1
+        row(0).border_color = "000000"
         column(1).align = :center
     end
 
     move_down 20
-    text "Coins:", style: :bold
+    text "Coins:", style: :bold, align: :center
     coin_table_data = [["Coin", "Quantity"]]
     coin_change.each do |coin, count|
         coin_table_data << ["Kshs #{coin}", (count).round(0)]
     end
+
     table(coin_table_data, header: true, width: bounds.width) do
-        cells.padding = 4
-        cells.borders = [:bottom]
-        row(0).font_style = :bold
+        cells.padding = 2
+        cells.borders = []
+        cells.font_style = :italic
+        row(0).font_style = :bold 
+        row(0).borders = [:bottom]
+        row(0).border_width = 1
+        row(0).border_color = "000000"
         column(1).align = :center
-    end  
+    end
+
     move_down 20
     text "Thank you for shopping with us!", style: :italic, align: :center
     move_down 20
@@ -322,7 +335,7 @@ Prawn::Document.generate(receipt_filename) do
     qr_code_x_position = (bounds.width - 150) / 2
 
     # Calculate the y-coordinates for the QR code bounding box
-    qr_code_y_position = 100
+    qr_code_y_position = 110
 
     # Place the QR code at the bottom of the receipt
     bounding_box([qr_code_x_position, qr_code_y_position], width: 150, height: 150) do
