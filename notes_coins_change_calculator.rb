@@ -258,6 +258,7 @@ qr_png = qrcode.as_png(
     file: nil # Don't save the file, return as a string
 )
 
+
 Prawn::Document.generate(receipt_filename) do
     text "Ruby Shopping Cart", align: :center, size: 30, style: :bold
     text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
@@ -317,9 +318,11 @@ Prawn::Document.generate(receipt_filename) do
     move_down 20
     text "Scan the QR code below for more details:", align: :center
 
-     
-    
+    # Determine the position to center the QR code
+    qr_code_x_position = (bounds.width - qr_png.width) / 2
+
+    # Place the QR code at the bottom of the receipt
+    bounding_box([qr_code_x_position, 50], width: 150, height: 150) do
+        image StringIO.new(qr_png.to_s), width: 150, height:150
+    end
 end
-
-
-
