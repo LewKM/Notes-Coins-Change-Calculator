@@ -287,8 +287,25 @@ Prawn::Document.generate(receipt_filename) do
     
     
     move_down 20
-    text "You have earned a discount of Kshs #{discount_amount}!", style: :bold
-    move_down 10
+    # Calculate the width of "You have earned a discount of Kshs " and "#{discount_amount}"
+    discount_text_width = width_of("You have earned a discount of Kshs ")
+    discount_amount_width = width_of("Kshs #{discount_amount}")
+
+    # Calculate the positions for "You have earned a discount of Kshs " and "#{discount_amount}"
+    discount_text_x_position = bounds.left
+    discount_amount_x_position = bounds.right - 100
+
+    # Calculate the height of the line containing "You have earned a discount of Kshs " and "#{discount_amount}"
+    line_height = 20  # Set a fixed line height
+
+    # Place "You have earned a discount of Kshs " on the left and "#{discount_amount}" on the right
+    discount_text_y_position = cursor
+    discount_amount_y_position = cursor
+
+    text_box "You have earned a discount of Kshs ", at: [discount_text_x_position, discount_text_y_position], style: :bold
+    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :bold
+
+    move_down line_height + 10
 
     # Calculate the width of "Total BILL:" and "Kshs #{total}"
     total_bill_width = width_of("Total BILL:")
