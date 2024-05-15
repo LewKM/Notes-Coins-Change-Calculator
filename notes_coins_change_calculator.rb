@@ -278,7 +278,7 @@ Prawn::Document.generate(receipt_filename) do
     text "Notes:", style: :bold
     note_table_data = [["Note", "Quantity"]]
     note_change.each do |note, count|
-        note_table_data << ["Kshs #{note}", count]
+        note_table_data << ["Kshs #{note}", (count).round(0)]
     end
     table(note_table_data, header: true, width: bounds.width) do
         cells.padding = 6
@@ -290,7 +290,7 @@ Prawn::Document.generate(receipt_filename) do
     text "Coins:", style: :bold
     coin_table_data = [["Coin", "Quantity"]]
     coin_change.each do |coin, count|
-        coin_table_data << ["Kshs #{coin}", count]
+        coin_table_data << ["Kshs #{coin}", (count).round(0)]
     end
     table(coin_table_data, header: true, width: bounds.width) do
         cells.padding = 6
