@@ -297,6 +297,7 @@ Prawn::Document.generate(receipt_filename) do
         cells.padding = 4
         cells.borders = [:bottom]
         row(0).font_style = :bold
+        column(1).align = :center
     end
 
     move_down 20
@@ -309,14 +310,15 @@ Prawn::Document.generate(receipt_filename) do
         cells.padding = 4
         cells.borders = [:bottom]
         row(0).font_style = :bold
+        column(1).align = :center
     end  
     move_down 20
     text "Thank you for shopping with us!", style: :italic, align: :center
     move_down 20
     text "Scan the QR code below for more details:", align: :center
 
-    # Embed the QR code PNG into the PDF
-    image StringIO.new(qr_png.to_s), width: 150, height: 150, at: [100, cursor - 150]
+     
+    
 end
 
 
