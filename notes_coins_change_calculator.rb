@@ -274,9 +274,10 @@ Prawn::Document.generate(receipt_filename) do
 
     # Render the table
     table(item_table_data, header: true, width: bounds.width) do
-    cells.padding = 6
+    cells.padding = 4
     cells.borders = [:bottom]
     row(0).font_style = :bold
+    column(1).align = :center
     end
     
     move_down 20
@@ -293,7 +294,7 @@ Prawn::Document.generate(receipt_filename) do
         note_table_data << ["Kshs #{note}", (count).round(0)]
     end
     table(note_table_data, header: true, width: bounds.width) do
-        cells.padding = 6
+        cells.padding = 4
         cells.borders = [:bottom]
         row(0).font_style = :bold
     end
@@ -305,7 +306,7 @@ Prawn::Document.generate(receipt_filename) do
         coin_table_data << ["Kshs #{coin}", (count).round(0)]
     end
     table(coin_table_data, header: true, width: bounds.width) do
-        cells.padding = 6
+        cells.padding = 4
         cells.borders = [:bottom]
         row(0).font_style = :bold
     end  
