@@ -262,9 +262,21 @@ Prawn::Document.generate(receipt_filename) do
     text "Ruby Shopping Cart", align: :center, size: 30, style: :bold
     text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
     move_down 20
-    text "Items Purchased", style: :bold
+    # Collect item data for the table
+    item_table_data = [["Item", "Quantity", "Price"]]
+
     items_selected.each do |item|
-        text "#{item[:quantity]} x #{item[:item]} - Kshs #{shopping_menu[item[:item]] * item[:quantity] }"
+    item_name = item[:item]
+    item_quantity = item[:quantity]
+    item_price = shopping_menu[item_name] * item_quantity
+    item_table_data << [item_name, item_quantity, "Kshs #{item_price}"]
+    end
+
+    # Render the table
+    table(item_table_data, header: true, width: bounds.width) do
+    cells.padding = 6
+    cells.borders = [:bottom]
+    row(0).font_style = :bold
     end
     
     move_down 20
