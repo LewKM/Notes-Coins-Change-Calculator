@@ -60,7 +60,7 @@ Enjoy shopping with the Kenyan Shopping Cart and Currency Change Calculator!
 
 
 
-Receipt Printing: Not implemented in the provided code. This could be added at the end of the program to generate a formatted receipt with details of the items purchased, quantities, prices, subtotal, total, and any applicable taxes or discounts.
+
 
 Error Handling: Implemented for invalid quantity inputs in the quantity adjustment feature. Further error handling could be added for other potential errors, such as invalid menu selections or unexpected input.
 
