@@ -319,10 +319,13 @@ Prawn::Document.generate(receipt_filename) do
     text "Scan the QR code below for more details:", align: :center
 
     # Determine the position to center the QR code
-    qr_code_x_position = (bounds.width - qr_png.width) / 2
+    qr_code_x_position = (bounds.width - 150) / 2
+
+    # Calculate the y-coordinates for the QR code bounding box
+    qr_code_y_position = 100
 
     # Place the QR code at the bottom of the receipt
-    bounding_box([qr_code_x_position, 50], width: 150, height: 150) do
+    bounding_box([qr_code_x_position, qr_code_y_position], width: 150, height: 150) do
         image StringIO.new(qr_png.to_s), width: 150, height:150
     end
 end
