@@ -211,6 +211,33 @@ end
 # puts "Total\t\t\t\tKshs #{total_price}"
 # puts "🎉🎉🎉 You have earned a discount of Kshs #{discount_amount}! 🎉🎉🎉"
 
+puts ""
+puts "💰 Total BILL: Kshs #{total}"
+puts ""
+
+puts "💵 Enter the cash given (Kshs):"
+cash_given = gets.chomp.to_i
+
+puts ""
+
+change = change_calculator(total, cash_given)
+
+if change
+    note_change, coin_change = change
+    puts "💸💸💸 Change Breakdown 💸💸💸"
+    puts "💰💰💰 CHANGE DUE: Kshs #{(cash_given - total).round(2)} 💰💰💰"
+    puts ""
+    puts "💵 Notes:"
+    note_change.each do |note, count|
+        puts " #{(count).round(0)} of Kshs #{note} notes"
+    end
+
+    puts "💰 Coins:"
+    coin_change.each do |coin, count|
+        puts " #{(count).round(0)} of Kshs #{coin} coins"
+    end
+end
+
 # Save PDF receipt generator
 
 receipt_code = rand(36**5).to_s(10).rjust(5, "0")
@@ -239,10 +266,18 @@ Prawn::Document.generate(receipt_filename) do
         text "#{item[:quantity]} x #{item[:item]} - Kshs #{shopping_menu[item[:item]] * item[:quantity] }"
     end
     
-    move_down 10
-    text "Total: Kshs #{total}", style: :bold
     move_down 20
     text "You have earned a discount of Kshs #{discount_amount}!", style: :bold
+    move_down 10
+    text "Total BILL: Kshs #{total}", style: :bold
+    move_down 10
+    text "Cash Given: Kshs #{cash_given}", style: :bold
+    move_down 10
+    text "Change BreakDown:"
+    move_down 5
+    text "Notes: #{note_change}"
+    move_down 5
+    text "Coins: #{coin_change}"
     move_down 20
     text "Thank you for shopping with us!", style: :italic, align: :center
     move_down 20
@@ -253,29 +288,4 @@ Prawn::Document.generate(receipt_filename) do
 end
 
 
-puts ""
-puts "💰 Total BILL: Kshs #{total}"
-puts ""
 
-puts "💵 Enter the cash given (Kshs):"
-cash_given = gets.chomp.to_i
-
-puts ""
-
-change = change_calculator(total, cash_given)
-
-if change
-    note_change, coin_change = change
-    puts "💸💸💸 Change Breakdown 💸💸💸"
-    puts "💰💰💰 CHANGE DUE: Kshs #{(cash_given - total).round(2)} 💰💰💰"
-    puts ""
-    puts "💵 Notes:"
-    note_change.each do |note, count|
-        puts " #{(count).round(0)} of Kshs #{note} notes"
-    end
-
-    puts "💰 Coins:"
-    coin_change.each do |coin, count|
-        puts " #{(count).round(0)} of Kshs #{coin} coins"
-    end
-end
