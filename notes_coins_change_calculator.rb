@@ -273,11 +273,29 @@ Prawn::Document.generate(receipt_filename) do
     move_down 10
     text "Cash Given: Kshs #{cash_given}", style: :bold
     move_down 10
-    text "Change BreakDown:"
-    move_down 5
-    text "Notes: #{note_change}"
-    move_down 5
-    text "Coins: #{coin_change}"
+    move_down 20
+    text "Notes:", style: :bold
+    note_table_data = [["Note", "Quantity"]]
+    note_change.each do |note, count|
+        note_table_data << ["Kshs #{note}", count]
+    end
+    table(note_table_data, header: true, width: bounds.width) do
+        cells.padding = 6
+        cells.borders = [:bottom]
+        row(0).font_style = :bold
+    end
+
+    move_down 20
+    text "Coins:", style: :bold
+    coin_table_data = [["Coin", "Quantity"]]
+    coin_change.each do |coin, count|
+        coin_table_data << ["Kshs #{coin}", count]
+    end
+    table(coin_table_data, header: true, width: bounds.width) do
+        cells.padding = 6
+        cells.borders = [:bottom]
+        row(0).font_style = :bold
+    end  
     move_down 20
     text "Thank you for shopping with us!", style: :italic, align: :center
     move_down 20
