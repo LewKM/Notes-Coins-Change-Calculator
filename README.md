@@ -59,10 +59,4 @@ If you have any feedback, suggestions, or bug reports, please feel free to [open
 Enjoy shopping with the Kenyan Shopping Cart and Currency Change Calculator!
 
 
-
-
-
-Error Handling: Implemented for invalid quantity inputs in the quantity adjustment feature. Further error handling could be added for other potential errors, such as invalid menu selections or unexpected input.
-
 Currency Options: Not implemented in the provided code. This could be added as a configuration option at the beginning of the program to allow users to select their preferred currency for displaying prices.
-}}}
