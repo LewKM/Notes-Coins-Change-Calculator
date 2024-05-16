@@ -267,12 +267,14 @@ qr_png = qrcode.as_png(
 
 
 Prawn::Document.generate(receipt_filename) do
-    text "Ruby Shopping Cart", align: :center, size: 30, style: :bold
-    text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
-
+    text "Sperizon Mini Mart", align: :center, size: 30, style: :bold
+    
     # Capture date and time(YYYY-MM-DD HH:MM:SS)
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    text "Date and Time: #{datetime}", align: :center, size: 10, style: :italic
+
+    receipt_code = datetime.gsub(/[^0-9]/, '')
+    text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
+    text "Date #{datetime}", align: :center, size: 10, style: :italic
 
     move_down 20
 
