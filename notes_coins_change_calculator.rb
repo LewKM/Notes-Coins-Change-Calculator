@@ -270,6 +270,8 @@ Prawn::Document.generate(receipt_filename) do
     text "Ruby Shopping Cart", align: :center, size: 30, style: :bold
     text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
     move_down 20
+
+    font_size 10
     # Collect item data for the table
     item_table_data = [["Item", "Quantity", "Price"]]
 
@@ -309,7 +311,7 @@ Prawn::Document.generate(receipt_filename) do
     total_before_discount_text_y_position = cursor
     total_before_discount_amount_y_position = cursor 
 
-    text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold, size: 10
+    text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold, size: 11
     text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
@@ -329,7 +331,7 @@ Prawn::Document.generate(receipt_filename) do
     discount_text_y_position = cursor
     discount_amount_y_position = cursor
 
-    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold, size: 10
+    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold, size: 11
     text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
@@ -349,7 +351,7 @@ Prawn::Document.generate(receipt_filename) do
     total_bill_y_position = cursor
     total_amount_y_position = cursor 
 
-    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold, size: 10
+    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold, size: 11
     text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 5
@@ -374,7 +376,7 @@ Prawn::Document.generate(receipt_filename) do
     cash_given_text_y_position = cursor
     cash_given_amount_y_position = cursor 
 
-    text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold, size: 10
+    text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold, size: 11
     text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
@@ -394,16 +396,19 @@ Prawn::Document.generate(receipt_filename) do
     change_text_y_position = cursor
     change_amount_y_position = cursor 
 
-    text_box "Change:", at: [change_text_x_position, change_text_y_position], style: :bold
-    text_box "Kshs #{change.round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic
+    text_box "Change:", at: [change_text_x_position, change_text_y_position], style: :bold, size: 11
+    text_box "Kshs #{change.round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic, size: 10
 
 
     move_down 20
-    text "Notes:", style: :bold, align: :center
+    text "Change BreakDown:", style: :bold, align: :center, size: 15
     note_table_data = [["Note", "Quantity"]]
     note_change.each do |note, count|
         note_table_data << ["Kshs #{note}", (count).round(0)]
     end
+
+    
+    
     table(note_table_data, header: true, width: bounds.width) do
         cells.padding = 2
         cells.borders = []
@@ -416,7 +421,6 @@ Prawn::Document.generate(receipt_filename) do
     end
 
     move_down 20
-    text "Coins:", style: :bold, align: :center
     coin_table_data = [["Coin", "Quantity"]]
     coin_change.each do |coin, count|
         coin_table_data << ["Kshs #{coin}", (count).round(0)]
