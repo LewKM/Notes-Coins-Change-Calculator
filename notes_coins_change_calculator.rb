@@ -439,7 +439,6 @@ Prawn::Document.generate(receipt_filename) do
 
     move_down 20
     text "Thank you for shopping with us!", style: :italic, align: :center
-    move_down 20
 
     # Determine the position to center the QR code
     qr_code_x_position = (bounds.width - 100) / 2
@@ -451,13 +450,13 @@ Prawn::Document.generate(receipt_filename) do
     text_width = width_of("Scan the QR Code")
 
     # Calculate the x-coordinate for the text to center it horizontally
-    text_x_position = (bounds.width - text_width) / 2
+    text_x_position = (bounds.width - text_width) / 2 
 
     # Calculate the y-coordinate for the text
-    text_y_position = qr_code_y_position + 5  # Adjusted to be closer to the QR code
+    text_y_position = qr_code_y_position + 8  # Adjusted to be closer to the QR code
 
     # Place the text
-    text_box "Scan the QR Code", at: [text_x_position, text_y_position]
+    text_box "Scan the QR Code", at: [text_x_position, text_y_position], size: 10
 
     # Place the QR code below the text
     bounding_box([qr_code_x_position, qr_code_y_position], width: 100, height: 100) do
