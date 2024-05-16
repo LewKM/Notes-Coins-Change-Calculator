@@ -309,8 +309,8 @@ Prawn::Document.generate(receipt_filename) do
     total_before_discount_text_y_position = cursor
     total_before_discount_amount_y_position = cursor 
 
-    text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold
-    text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic
+    text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold, size: 10
+    text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
 
@@ -329,8 +329,8 @@ Prawn::Document.generate(receipt_filename) do
     discount_text_y_position = cursor
     discount_amount_y_position = cursor
 
-    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold
-    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic
+    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold, size: 10
+    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
 
@@ -349,8 +349,8 @@ Prawn::Document.generate(receipt_filename) do
     total_bill_y_position = cursor
     total_amount_y_position = cursor 
 
-    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold
-    text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic
+    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold, size: 10
+    text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 5
     # Draw a horizontal line
@@ -358,7 +358,7 @@ Prawn::Document.generate(receipt_filename) do
         stroke_color "000000"
         stroke_horizontal_line bounds.left, bounds.right, at: cursor
     end
-    move_down line_height + 5
+    move_down 5
     # Calculate the width of "Cash Given: Kshs " and "#{cash_given}"
     cash_given_text_width = width_of("Cash Given:")
     cash_given_amount_width = width_of("Kshs #{cash_given}")
@@ -374,8 +374,8 @@ Prawn::Document.generate(receipt_filename) do
     cash_given_text_y_position = cursor
     cash_given_amount_y_position = cursor 
 
-    text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold
-    text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :italic
+    text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold, size: 10
+    text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
 
