@@ -1,4 +1,5 @@
 # Notes-Coins-Change-Calculator
+
 ## Shopping Cart and Currency Change Calculator
 
 This Ruby script serves as a simple shopping cart and currency change calculator for a Kenyan market. It allows users to select items, specify quantities, remove items, calculate the total bill, and determine the change to be given back based on the cash provided.
@@ -57,6 +58,3 @@ This script was developed by Lewis Mwendwa Kathembe and is provided under the [M
 If you have any feedback, suggestions, or bug reports, please feel free to [open an issue](https://github.com/your-repo/issues). Your contributions are welcome!
 
 Enjoy shopping with the Kenyan Shopping Cart and Currency Change Calculator!
-
-
-Currency Options: Not implemented in the provided code. This could be added as a configuration option at the beginning of the program to allow users to select their preferred currency for displaying prices.
