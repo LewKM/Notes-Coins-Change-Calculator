@@ -167,8 +167,8 @@ puts ""
 
 # Apply discount rules
 if items_selected.length >= MULTI_ITEM_DISCOUNT_THRESHOLD
-   discount_amount = (total * (MULTI_ITEM_DISCOUNT_THRESHOLD.to_f / 100)).round(2)
-   total -= discount_amount 
+    discount_amount = (total * (MULTI_ITEM_DISCOUNT_THRESHOLD.to_f / 100)).round(2)
+    total -= discount_amount 
 end
 # Print the final items in the cart with their quantities
 # puts "Items in the cart:"
@@ -279,7 +279,7 @@ Prawn::Document.generate(receipt_filename) do
     move_down 20
 
     font_size 10
-   # Collect item data for the table
+    # Collect item data for the table
     item_table_data = [["Item", "Quantity", "Price"]]
 
     items_selected.each do |item|
@@ -432,7 +432,7 @@ Prawn::Document.generate(receipt_filename) do
         row(0).borders = [:bottom]
         row(0).border_width = 1
         row(0).border_color = "000000"
-        column(1).align = :center
+        column(1).align = :right
     end
 
     move_down 20
@@ -449,7 +449,7 @@ Prawn::Document.generate(receipt_filename) do
         row(0).borders = [:bottom]
         row(0).border_width = 1
         row(0).border_color = "000000"
-        column(1).align = :center
+        column(1).align = :right
     end
 
     move_down 20
