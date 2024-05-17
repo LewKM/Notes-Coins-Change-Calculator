@@ -373,13 +373,14 @@ Prawn::Document.generate(receipt_filename) do
         stroke_horizontal_line bounds.left, bounds.right, at: cursor
     end
     move_down 5
+
     # Calculate the width of "Cash Given: Kshs " and "#{cash_given}"
     cash_given_text_width = width_of("Cash Given:")
     cash_given_amount_width = width_of("Kshs #{cash_given}")
 
     # Calculate the positions for "Cash Given: Kshs " and "#{cash_given}"
     cash_given_text_x_position = bounds.left
-    cash_given_amount_x_position = bounds.right - 50
+    cash_given_amount_x_position = bounds.right - cash_given_amount_width
 
     # Calculate the height of the line containing "Cash Given: Kshs " and "#{cash_given}"
     line_height = 10  # Set a fixed line height
