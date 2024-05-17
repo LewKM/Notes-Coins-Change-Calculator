@@ -347,14 +347,13 @@ Prawn::Document.generate(receipt_filename) do
 
     move_down line_height + 10
 
-
     # Calculate the width of "Total After Discount:" and "Kshs #{total}"
     total_bill_width = width_of("Total After Discount:")
     total_amount_width = width_of("Kshs #{total}")
 
     # Calculate the positions for "Total After Discount:" and "Kshs #{total}"
     total_bill_x_position = bounds.left
-    total_amount_x_position = bounds.right - 60
+    total_amount_x_position = bounds.right - total_amount_width
 
     # Calculate the height of the line containing "Total After Discount:" and "Kshs #{total}"
     line_height = 10  # Set a fixed line height
@@ -367,6 +366,7 @@ Prawn::Document.generate(receipt_filename) do
     text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 5
+
     # Draw a horizontal line
     stroke do
         stroke_color "000000"
