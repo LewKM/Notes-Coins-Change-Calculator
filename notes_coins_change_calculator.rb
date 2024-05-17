@@ -282,6 +282,14 @@ Prawn::Document.generate(receipt_filename) do
     move_down 20
 
     font_size 10
+
+    stroke do
+        dash(3, space: 3) # Set the dash pattern: 3 points dash, 3 points space
+        stroke_color "000000"
+        stroke_horizontal_line bounds.left, bounds.right, at: cursor
+        undash # Reset the dash pattern to solid line after drawing
+    end
+        
     # Collect item data for the table
     item_table_data = [["Item", "Quantity", "Price"]]
 
@@ -305,7 +313,7 @@ Prawn::Document.generate(receipt_filename) do
         column(2).align = :right  # Align the price column to the right
     end
 
-    move_down line_height + 5
+    move_down 5
     # Draw a dashed horizontal line
     stroke do
         dash(3, space: 3) # Set the dash pattern: 3 points dash, 3 points space
@@ -314,7 +322,7 @@ Prawn::Document.generate(receipt_filename) do
         undash # Reset the dash pattern to solid line after drawing
     end
         
-    move_down 20
+    move_down 5
     # Calculate the width of "Total Before Discount" and "#{total_before_discount}"
     # Calculate the width of "Total Before Discount:" and "Kshs #{total_before_discount}"
     total_before_discount_text_width = width_of("Total Before Discount:")
@@ -431,7 +439,7 @@ Prawn::Document.generate(receipt_filename) do
     text_box "Cash Given:", at: [cash_given_text_x_position, cash_given_text_y_position], style: :bold, size: 11
     text_box "Kshs #{cash_given}", at: [cash_given_amount_x_position, cash_given_amount_y_position], style: :italic, size: 10
 
-    move_down line_height + 10
+    move_down line_height + 5
 
     # Calculate the change
 
@@ -456,6 +464,12 @@ Prawn::Document.generate(receipt_filename) do
     move_down line_height + 10
 
     text "Change BreakDown:", style: :bold, align: :center, size: 15
+    stroke do
+        dash(3, space: 3) # Set the dash pattern: 3 points dash, 3 points space
+        stroke_color "000000"
+        stroke_horizontal_line bounds.left, bounds.right, at: cursor
+        undash # Reset the dash pattern to solid line after drawing
+    end
     note_table_data = [["Note", "Quantity"]]
     note_change.each do |note, count|
         note_table_data << ["Kshs #{note}", (count).round(0)]
@@ -475,6 +489,12 @@ Prawn::Document.generate(receipt_filename) do
     end
 
     move_down 20
+    stroke do
+        dash(3, space: 3) # Set the dash pattern: 3 points dash, 3 points space
+        stroke_color "000000"
+        stroke_horizontal_line bounds.left, bounds.right, at: cursor
+        undash # Reset the dash pattern to solid line after drawing
+    end
     coin_table_data = [["Coin", "Quantity"]]
     coin_change.each do |coin, count|
         coin_table_data << ["Kshs #{coin}", (count).round(0)]
@@ -491,7 +511,27 @@ Prawn::Document.generate(receipt_filename) do
         column(1).align = :right
     end
 
-    move_down 20
+    # Define the star character and the font size
+    star = '*'
+    font_size = 11
+
+    # Calculate the width of a single star character
+    star_width = width_of(star, size: font_size)
+
+    # Calculate the number of stars needed to span the width of the bounds
+    num_stars = (bounds.width / star_width).floor
+
+    # Generate the star line
+    star_line = star * num_stars
+
+    # Draw the star line at the current cursor position
+    text_box star_line, at: [bounds.left, cursor], width: bounds.width, height: font_size, size: font_size, overflow: :shrink_to_fit
+
+    # Move the cursor down to avoid overlap with subsequent text
+    move_down font_size + 2
+
+    move_down 5
+
     text "Thank you for shopping with us!", style: :italic, align: :center
 
     # Determine the position to center the QR code
