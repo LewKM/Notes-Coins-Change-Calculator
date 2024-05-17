@@ -168,7 +168,10 @@ puts ""
 # Apply discount rules
 if items_selected.length >= MULTI_ITEM_DISCOUNT_THRESHOLD
     discount_amount = (total * (MULTI_ITEM_DISCOUNT_THRESHOLD.to_f / 100)).round(2)
-    total -= discount_amount 
+    total -= discount_amount
+    discount_display = "Kshs #{discount_amount}"
+else
+    discount_display = "-"
 end
 # Print the final items in the cart with their quantities
 # puts "Items in the cart:"
@@ -302,8 +305,15 @@ Prawn::Document.generate(receipt_filename) do
         column(2).align = :right  # Align the price column to the right
     end
 
-    
-    
+    move_down line_height + 5
+    # Draw a dashed horizontal line
+    stroke do
+        dash(3, space: 3) # Set the dash pattern: 3 points dash, 3 points space
+        stroke_color "000000"
+        stroke_horizontal_line bounds.left, bounds.right, at: cursor
+        undash # Reset the dash pattern to solid line after drawing
+    end
+        
     move_down 20
     # Calculate the width of "Total Before Discount" and "#{total_before_discount}"
     # Calculate the width of "Total Before Discount:" and "Kshs #{total_before_discount}"
@@ -325,31 +335,50 @@ Prawn::Document.generate(receipt_filename) do
     text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic, size: 10
 
 
-    move_down line_height + 10
+    move_down line_height + 5
 
     # Calculate the width of "Discount Earned:" and "Kshs #{discount_amount}"
-    discount_text_width = width_of("Discount Earned:")
-    discount_amount_width = width_of("Kshs #{discount_amount}")
+    # Calculate the width of "Discount Earned:" and the discount display
+    discount_text = "Discount Earned:"
+    discount_display = items_selected.length >= MULTI_ITEM_DISCOUNT_THRESHOLD ? "Kshs #{(total * (MULTI_ITEM_DISCOUNT_THRESHOLD.to_f / 100)).round(1)}" : "-"
 
-    # Calculate the positions for "Discount Earned" and "Kshs #{discount_amount}"
+    discount_text_width = width_of(discount_text)
+    discount_amount_width = width_of(discount_display)
+
+    # Calculate the positions for "Discount Earned" and the discount display
     discount_text_x_position = bounds.left
     discount_amount_x_position = bounds.right - discount_amount_width
 
-    # Calculate the height of the line containing "Discount Earned" and "Kshs #{discount_amount}"
+    # Calculate the height of the line containing "Discount Earned" and the discount display
     line_height = 10  # Set a fixed line height
 
-    # Place "Discount Earned" on the left and "Kshs #{discount_amount}" on the right
+    # Place "Discount Earned" on the left and the discount display on the right
     discount_text_y_position = cursor
     discount_amount_y_position = cursor
 
-    text_box "Discount Earned:", at: [discount_text_x_position, discount_text_y_position], style: :bold, size: 11
-    text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: 10
+    # Render "Discount Earned:" on the left
+    text_box discount_text, at: [discount_text_x_position, discount_text_y_position], style: :bold, size: 11
 
-    move_down line_height + 10
+    # Render the discount display on the right, ensuring it fits within the bounds
+    begin
+    text_box discount_display, at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: 10
+    rescue Prawn::Errors::CannotFit
+    # Reduce font size dynamically if the text doesn't fit
+    font_size = 10
+    while width_of(discount_display, size: font_size) > (bounds.width - discount_text_width) && font_size > 5
+        font_size -= 0.5
+    end
+    text_box discount_display, at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: font_size
+    end
+
+    move_down line_height + 5
 
     # Calculate the width of "Total After Discount:" and "Kshs #{total}"
-    total_bill_width = width_of("Total After Discount:")
-    total_amount_width = width_of("Kshs #{total}")
+    total_bill_text = "Total After Discount:"
+    total_amount_text = "Kshs #{total.round(1)}"
+
+    total_bill_width = width_of(total_bill_text)
+    total_amount_width = width_of(total_amount_text)
 
     # Calculate the positions for "Total After Discount:" and "Kshs #{total}"
     total_bill_x_position = bounds.left
@@ -362,8 +391,18 @@ Prawn::Document.generate(receipt_filename) do
     total_bill_y_position = cursor
     total_amount_y_position = cursor 
 
-    text_box "Total After Discount:", at: [total_bill_x_position, total_bill_y_position], style: :bold, size: 11
-    text_box "Kshs #{total}", at: [total_amount_x_position, total_amount_y_position], style: :italic, size: 10
+    # Render "Total After Discount:" and "Kshs #{total}" with adjusted font size if necessary
+    begin
+    text_box total_bill_text, at: [total_bill_x_position, total_bill_y_position], style: :bold, size: 11
+    text_box total_amount_text, at: [total_amount_x_position, total_amount_y_position], style: :italic, size: 10
+    rescue Prawn::Errors::CannotFit
+    # Reduce font size dynamically if the text doesn't fit
+    font_size = 10
+    while width_of(total_amount_text, size: font_size) > (bounds.right - bounds.left) && font_size > 5
+        font_size -= 0.5
+    end
+    text_box total_amount_text, at: [total_amount_x_position, total_amount_y_position], style: :italic, size: font_size
+    end
 
     move_down line_height + 5
 
@@ -398,7 +437,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the width of "Change:" and "#{change}"
     change_text_width = width_of("Change:")
-    change_amount_width = width_of("Kshs #{(cash_given - total).round(2)}")
+    change_amount_width = width_of("Kshs #{(cash_given - total).round(1)}")
 
     # Calculate the positions for "Change:" and "#{change}"
     change_text_x_position = bounds.left
@@ -412,7 +451,7 @@ Prawn::Document.generate(receipt_filename) do
     change_amount_y_position = cursor 
 
     text_box "Change:", at: [change_text_x_position, change_text_y_position], style: :bold, size: 11
-    text_box "Kshs #{(cash_given - total).round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic, size: 10
+    text_box "Kshs #{(cash_given - total).round(1)}", at: [change_amount_x_position, change_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
 
