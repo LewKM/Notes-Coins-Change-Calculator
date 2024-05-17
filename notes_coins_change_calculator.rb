@@ -279,14 +279,14 @@ Prawn::Document.generate(receipt_filename) do
     move_down 20
 
     font_size 10
-    # Collect item data for the table
+   # Collect item data for the table
     item_table_data = [["Item", "Quantity", "Price"]]
 
     items_selected.each do |item|
-    item_name = item[:item]
-    item_quantity = item[:quantity]
-    item_price = shopping_menu[item_name] * item_quantity
-    item_table_data << [item_name, item_quantity, "Kshs #{item_price}"]
+        item_name = item[:item]
+        item_quantity = item[:quantity]
+        item_price = shopping_menu[item_name] * item_quantity
+        item_table_data << [item_name, item_quantity, "Kshs #{item_price}"]
     end
 
     # Render the table
@@ -299,27 +299,31 @@ Prawn::Document.generate(receipt_filename) do
         row(0).border_width = 1
         row(0).border_color = "000000"
         column(1).align = :center
+        column(2).align = :right  # Align the price column to the right
     end
+
     
     
     move_down 20
     # Calculate the width of "Total Before Discount" and "#{total_before_discount}"
+    # Calculate the width of "Total Before Discount:" and "Kshs #{total_before_discount}"
     total_before_discount_text_width = width_of("Total Before Discount:")
     total_before_discount_amount_width = width_of("Kshs #{total_before_discount}")
 
-    # Calculate the positions for "Total Before Discount" and "#{total_before_discount}"
+    # Calculate the positions for "Total Before Discount" and "Kshs #{total_before_discount}"
     total_before_discount_text_x_position = bounds.left
-    total_before_discount_amount_x_position = bounds.right - 100
+    total_before_discount_amount_x_position = bounds.right - total_before_discount_amount_width
 
-    # Calculate the height of the line containing "Total Before Discount" and "#{total_before_discount}"
+    # Calculate the height of the line containing "Total Before Discount" and "Kshs #{total_before_discount}"
     line_height = 10  # Set a fixed line height
 
-    # Place "Total Before Discount" on the left and "#{total_before_discount}" on the right
+    # Place "Total Before Discount" on the left and "Kshs #{total_before_discount}" on the right
     total_before_discount_text_y_position = cursor
     total_before_discount_amount_y_position = cursor 
 
     text_box "Total Before Discount:", at: [total_before_discount_text_x_position, total_before_discount_text_y_position], style: :bold, size: 11
     text_box "Kshs #{total_before_discount}", at: [total_before_discount_amount_x_position, total_before_discount_amount_y_position], style: :italic, size: 10
+
 
     move_down line_height + 10
 
@@ -329,7 +333,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the positions for "Discount Earned" and "#{discount_amount}"
     discount_text_x_position = bounds.left
-    discount_amount_x_position = bounds.right - 100
+    discount_amount_x_position = bounds.right - 60
 
     # Calculate the height of the line containing "Discount Earned" and "#{discount_amount}"
     line_height = 10  # Set a fixed line height
@@ -349,7 +353,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the positions for "Total After Discount:" and "Kshs #{total}"
     total_bill_x_position = bounds.left
-    total_amount_x_position = bounds.right - 100
+    total_amount_x_position = bounds.right - 60
 
     # Calculate the height of the line containing "Total After Discount:" and "Kshs #{total}"
     line_height = 10  # Set a fixed line height
@@ -374,7 +378,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the positions for "Cash Given: Kshs " and "#{cash_given}"
     cash_given_text_x_position = bounds.left
-    cash_given_amount_x_position = bounds.right - 100
+    cash_given_amount_x_position = bounds.right - 50
 
     # Calculate the height of the line containing "Cash Given: Kshs " and "#{cash_given}"
     line_height = 10  # Set a fixed line height
@@ -397,7 +401,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the positions for "Change:" and "#{change}"
     change_text_x_position = bounds.left
-    change_amount_x_position = bounds.right - 100
+    change_amount_x_position = bounds.right - 50
 
     # Place "Change:" on the left and "#{change}" on the right
     change_text_y_position = cursor
