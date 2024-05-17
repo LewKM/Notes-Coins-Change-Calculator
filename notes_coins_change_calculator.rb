@@ -395,25 +395,27 @@ Prawn::Document.generate(receipt_filename) do
     move_down line_height + 10
 
     # Calculate the change
-    change = cash_given - total
 
     # Calculate the width of "Change:" and "#{change}"
     change_text_width = width_of("Change:")
-    change_amount_width = width_of("Kshs #{change.round(2)}")
+    change_amount_width = width_of("Kshs #{(cash_given - total).round(2)}")
 
     # Calculate the positions for "Change:" and "#{change}"
     change_text_x_position = bounds.left
-    change_amount_x_position = bounds.right - 50
+    change_amount_x_position = bounds.right - change_amount_width - change_text_width
+
+    # Calculate the height of the line containing "Change:" and "#{change}"
+    line_height = 10  # Set a fixed line height
 
     # Place "Change:" on the left and "#{change}" on the right
     change_text_y_position = cursor
     change_amount_y_position = cursor 
 
     text_box "Change:", at: [change_text_x_position, change_text_y_position], style: :bold, size: 11
-    text_box "Kshs #{change.round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic, size: 10
+    text_box "Kshs #{(cash_given - total).round(2)}", at: [change_amount_x_position, change_amount_y_position], style: :italic, size: 10
 
+    move_down line_height + 10
 
-    move_down 20
     text "Change BreakDown:", style: :bold, align: :center, size: 15
     note_table_data = [["Note", "Quantity"]]
     note_change.each do |note, count|
