@@ -402,7 +402,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the positions for "Change:" and "#{change}"
     change_text_x_position = bounds.left
-    change_amount_x_position = bounds.right - change_amount_width - change_text_width
+    change_amount_x_position = bounds.right - change_amount_width - change_text_width + 36
 
     # Calculate the height of the line containing "Change:" and "#{change}"
     line_height = 10  # Set a fixed line height
