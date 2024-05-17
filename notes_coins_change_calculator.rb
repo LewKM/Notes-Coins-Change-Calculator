@@ -383,7 +383,7 @@ Prawn::Document.generate(receipt_filename) do
 
     # Calculate the width of "Total After Discount:" and "Kshs #{total}"
     total_bill_text = "Total After Discount:"
-    total_amount_text = "Kshs #{total.round(1)}"
+    total_amount_text = "Kshs #{total.round(0)}"
 
     total_bill_width = width_of(total_bill_text)
     total_amount_width = width_of(total_amount_text)
