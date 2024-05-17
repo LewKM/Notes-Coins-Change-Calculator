@@ -327,18 +327,18 @@ Prawn::Document.generate(receipt_filename) do
 
     move_down line_height + 10
 
-    # Calculate the width of "Discount Earned" and "#{discount_amount}"
+    # Calculate the width of "Discount Earned:" and "Kshs #{discount_amount}"
     discount_text_width = width_of("Discount Earned:")
     discount_amount_width = width_of("Kshs #{discount_amount}")
 
-    # Calculate the positions for "Discount Earned" and "#{discount_amount}"
+    # Calculate the positions for "Discount Earned" and "Kshs #{discount_amount}"
     discount_text_x_position = bounds.left
-    discount_amount_x_position = bounds.right - 60
+    discount_amount_x_position = bounds.right - discount_amount_width
 
-    # Calculate the height of the line containing "Discount Earned" and "#{discount_amount}"
+    # Calculate the height of the line containing "Discount Earned" and "Kshs #{discount_amount}"
     line_height = 10  # Set a fixed line height
 
-    # Place "Discount Earned" on the left and "#{discount_amount}" on the right
+    # Place "Discount Earned" on the left and "Kshs #{discount_amount}" on the right
     discount_text_y_position = cursor
     discount_amount_y_position = cursor
 
@@ -346,6 +346,7 @@ Prawn::Document.generate(receipt_filename) do
     text_box "Kshs #{discount_amount}", at: [discount_amount_x_position, discount_amount_y_position], style: :italic, size: 10
 
     move_down line_height + 10
+
 
     # Calculate the width of "Total After Discount:" and "Kshs #{total}"
     total_bill_width = width_of("Total After Discount:")
