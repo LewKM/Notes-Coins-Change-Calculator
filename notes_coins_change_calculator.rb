@@ -275,7 +275,7 @@ Prawn::Document.generate(receipt_filename) do
     # Capture date and time(YYYY-MM-DD HH:MM:SS)
     datetime = Time.now.strftime("%Y-%m-%d %H:%M:%S")
 
-    receipt_code = datetime.gsub(/[^0-9]/, '')
+    # receipt_code = datetime.gsub(/[^0-9]/, '')
     text "Receipt Code: #{receipt_code}", align: :center, size: 20, style: :bold
     text "Date #{datetime}", align: :center, size: 10, style: :italic
 
@@ -293,7 +293,11 @@ Prawn::Document.generate(receipt_filename) do
     # Collect item data for the table
     item_table_data = [["Item", "Quantity", "Price"]]
 
-    items_selected.each do |item|
+    # Sort items by name alphabetically
+    sorted_items = items_selected.sort_by { |item| item[:item] }
+
+    # Populate the table with sorted items
+    sorted_items.each do |item|
         item_name = item[:item]
         item_quantity = item[:quantity]
         item_price = shopping_menu[item_name] * item_quantity
@@ -312,7 +316,6 @@ Prawn::Document.generate(receipt_filename) do
         column(1).align = :center
         column(2).align = :right  # Align the price column to the right
     end
-
     move_down 5
     # Draw a dashed horizontal line
     stroke do
