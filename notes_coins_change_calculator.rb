@@ -537,6 +537,9 @@ Prawn::Document.generate(receipt_filename) do
 
     text "Thank you for shopping with us!", style: :italic, align: :center
 
+    # Your were served by
+    text "You were served by: #{server_name}", style: :bold, align: :center
+    
     # Determine the position to center the QR code
     qr_code_x_position = (bounds.width - 100) / 2
 
